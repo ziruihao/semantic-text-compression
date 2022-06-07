@@ -25,12 +25,24 @@ if __name__ == '__main__':
         for root, dirs, files in os.walk(args.input):
             for file in files:
                 input_file_path = os.path.join(root, file)
+                with open(input_file_path, 'r', encoding = 'utf-8') as file:
+                    text = file.read()
+                    original_file_size = os.path.getsize(input_file_path)
+                compressed_text, compressed_words, total_words, duration = engine.compress(text, {'lossless': args.lossless, 'verbose': args.verbose })
                 output_file_path = os.path.join(args.output, file)
-                compressed_words, total_words, compressed_file_size, original_file_size = engine.compress(input_file_path, output_file_path, {'lossless': args.lossless, 'verbose': args.verbose })
+                with open(output_file_path, 'w', encoding = 'utf-8') as file:
+                    file.write(compressed_text)
+                compressed_file_size = os.path.getsize(output_file_path)
                 print('{} bytes\t{} bytes\t{:.2f}%\t\t{:.2f}%\t\t{}'.format(original_file_size, compressed_file_size, compressed_file_size / original_file_size * 100, compressed_words / total_words * 100, file))
     else:
         print('Compressing', args.input)
-        compressed_words, total_words, compressed_file_size, original_file_size = engine.compress(args.input, args.output, {'lossless': args.lossless, 'verbose': args.verbose })
+        with open(args.input, 'r', encoding = 'utf-8') as file:
+            text = file.read()
+            original_file_size = os.path.getsize(args.input)
+        compressed_text, compressed_words, total_words, duration = engine.compress(text, {'lossless': args.lossless, 'verbose': args.verbose })
+        with open(args.output, 'w', encoding = 'utf-8') as file:
+            file.write(compressed_text)
+        compressed_file_size = os.path.getsize(args.output)
         print('Compressed', str(round(compressed_words / total_words * 100, 1)) + '% of words, reducing file size from', original_file_size, 'bytes to', compressed_file_size, 'bytes at a', str(round(compressed_file_size / original_file_size * 100, 1)) + '% compression rate.')
     
     
