@@ -10,7 +10,7 @@ from nltk.tokenize import word_tokenize, sent_tokenize, TreebankWordDetokenizer
 
 class Engine:
     '''
-
+    Semantic text compression.
     '''
     def __init__(self, shorthand_file_path, lang = 'en'):
         with open(shorthand_file_path, 'r', encoding = 'utf-8') as file:
@@ -26,7 +26,6 @@ class Engine:
         '''
         Compress a file using the given options.
         '''
-        
         start_time = time.time()
         self.context_vector = np.zeros(self.model.vector_size)
         compressed_text = ''
@@ -91,6 +90,9 @@ class Engine:
             file.write(decompressed_text)
     
     def add_to_context(self, word):
+        '''
+        Add the given word to the context vector.
+        '''
         if self.context_vector is None:
             self.context_vector = np.zeros(self.model.vector_size)
         try:
@@ -108,6 +110,9 @@ class Engine:
 
     @staticmethod
     def shorten_word(word):
+        '''
+        Omit vowels.
+        '''
         return re.sub('[aeiou]', '', word.lower())
 
     @staticmethod

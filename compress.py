@@ -15,6 +15,7 @@ if __name__ == '__main__':
 
     engine = Engine('data/shorthand_dict.json')
 
+    # If input is a directory, compress all files and write to output directory.
     if os.path.isdir(args.input):
         if not os.path.isdir(args.output):
             os.mkdir(args.output)
@@ -34,6 +35,7 @@ if __name__ == '__main__':
                     file.write(compressed_text)
                 compressed_file_size = os.path.getsize(output_file_path)
                 print('{} bytes\t{} bytes\t{:.2f}%\t\t{:.2f}%\t\t{}'.format(original_file_size, compressed_file_size, compressed_file_size / original_file_size * 100, compressed_words / total_words * 100, file))
+    # If input is a file, compress and write to output file.
     else:
         print('Compressing', args.input)
         with open(args.input, 'r', encoding = 'utf-8') as file:
