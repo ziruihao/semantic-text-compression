@@ -1,3 +1,12 @@
+'''
+Ziray Hao
+f003mfv@dartmouth.edu
+Dartmouth College
+June 7, 2022
+
+TxtCmp: using semantic context to compress text by vowel omissions
+'''
+
 import os
 from engine import Engine
 import argparse
